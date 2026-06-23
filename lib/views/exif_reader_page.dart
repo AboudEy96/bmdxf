@@ -38,7 +38,7 @@ class _ExifReaderPageState extends State<ExifReaderPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message),
-          backgroundColor: AppTheme.surface,
+          backgroundColor: AppTheme.surfaceAlt,
           duration: const Duration(seconds: 2),
         ),
       );
@@ -59,10 +59,10 @@ class _ExifReaderPageState extends State<ExifReaderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppTheme.primary,
-        foregroundColor: Colors.white,
+        backgroundColor: AppTheme.appBar,
+        foregroundColor: AppTheme.primary,
         title: const Text('EXIF Location Reader',
-            style: TextStyle(fontWeight: FontWeight.w600)),
+            style: TextStyle(fontWeight: FontWeight.w600, letterSpacing: 1)),
         centerTitle: true,
         actions: [
           IconButton(
@@ -86,7 +86,9 @@ class _ExifReaderPageState extends State<ExifReaderPage> {
             ],
             const SizedBox(height: 16),
             if (_vm.isLoading)
-              const Center(child: CircularProgressIndicator()),
+              const Center(
+                child: CircularProgressIndicator(color: AppTheme.primary),
+              ),
             if (_vm.errorMessage != null)
               _buildNotice(_vm.errorMessage!),
             if (_vm.hasGps) ...[
@@ -151,13 +153,16 @@ class _ExifReaderPageState extends State<ExifReaderPage> {
             ? const SizedBox(
           width: 16,
           height: 16,
-          child: CircularProgressIndicator(strokeWidth: 2),
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: AppTheme.primary,
+          ),
         )
             : const Icon(Icons.save_alt, size: 18),
         label: Text(_vm.isSaving ? 'Saving...' : 'Save to Database'),
         style: OutlinedButton.styleFrom(
           foregroundColor: AppTheme.primary,
-          side: const BorderSide(color: AppTheme.primary),
+          side: BorderSide(color: AppTheme.primary.withOpacity(0.45)),
           padding: const EdgeInsets.symmetric(vertical: 12),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8)),
@@ -174,16 +179,17 @@ class _ExifReaderPageState extends State<ExifReaderPage> {
   Widget _buildNotice(String message) {
     return InfoCard(
       icon: Icons.warning_amber_rounded,
-      iconColor: Colors.orange,
+      iconColor: AppTheme.warning,
       title: 'Notice',
-      child: Text(message, style: const TextStyle(color: Colors.black87)),
+      child: Text(message,
+          style: const TextStyle(color: AppTheme.textPrimary)),
     );
   }
 
   Widget _buildGpsCard(GpsCoordinates gps) {
     return InfoCard(
       icon: Icons.location_on,
-      iconColor: Colors.red,
+      iconColor: AppTheme.danger,
       title: 'GPS Location',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,7 +205,7 @@ class _ExifReaderPageState extends State<ExifReaderPage> {
               label: const Text('Open in Google Maps'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.primary,
-                foregroundColor: Colors.white,
+                foregroundColor: AppTheme.scaffold,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8)),
               ),
@@ -211,14 +217,14 @@ class _ExifReaderPageState extends State<ExifReaderPage> {
   }
 
   Widget _buildNoGpsBanner() {
-    return const InfoCard(
+    return InfoCard(
       icon: Icons.location_off,
-      iconColor: Colors.grey,
+      iconColor: AppTheme.textMuted,
       title: 'No GPS Data',
-      child: Text(
+      child: const Text(
         'This image has no GPS coordinates embedded. '
             'Try a photo taken on a phone with location enabled.',
-        style: TextStyle(color: Colors.black54),
+        style: TextStyle(color: AppTheme.textSecondary),
       ),
     );
   }
@@ -239,7 +245,7 @@ class _ExifReaderPageState extends State<ExifReaderPage> {
 /*Widget _buildShotCard(ExifData data) {
     return InfoCard(
       icon: Icons.tune,
-      iconColor: Colors.teal,
+      iconColor: AppTheme.info,
       title: 'Shot Settings',
       child: Column(children: [
         if (data.exposureTime != null) DataRow('Exposure',     data.exposureTime!),

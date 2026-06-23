@@ -4,7 +4,6 @@ import 'package:bmdxf/theme/app_theme.dart';
 import 'package:bmdxf/viewmodels/exif_viewmodel.dart';
 import 'package:bmdxf/widgets/common_widgets.dart';
 
-
 class SavedImagesPage extends StatefulWidget {
   const SavedImagesPage({super.key, required this.viewModel});
 
@@ -36,10 +35,10 @@ class _SavedImagesPageState extends State<SavedImagesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppTheme.primary,
-        foregroundColor: Colors.white,
+        backgroundColor: AppTheme.appBar,
+        foregroundColor: AppTheme.primary,
         title: const Text('Saved Images',
-            style: TextStyle(fontWeight: FontWeight.w600)),
+            style: TextStyle(fontWeight: FontWeight.w600, letterSpacing: 1)),
         centerTitle: true,
       ),
       body: _buildBody(),
@@ -48,7 +47,9 @@ class _SavedImagesPageState extends State<SavedImagesPage> {
 
   Widget _buildBody() {
     if (_vm.isLoadingHistory) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(
+        child: CircularProgressIndicator(color: AppTheme.primary),
+      );
     }
 
     if (_vm.savedImages.isEmpty) {
@@ -56,12 +57,12 @@ class _SavedImagesPageState extends State<SavedImagesPage> {
         padding: const EdgeInsets.all(16),
         child: InfoCard(
           icon: Icons.photo_library_outlined,
-          iconColor: Colors.grey,
+          iconColor: AppTheme.textMuted,
           title: 'No Saved Images',
           child: const Text(
             'Images you save from the reader page will show up here, '
-            'stored locally in a SQLite database.',
-            style: TextStyle(color: Colors.black54),
+                'stored locally in a SQLite database.',
+            style: TextStyle(color: AppTheme.textSecondary),
           ),
         ),
       );
@@ -87,7 +88,7 @@ class _SavedImagesPageState extends State<SavedImagesPage> {
         Navigator.of(context).pop();
       },
       child: Container(
-        decoration: AppTheme.cardDecoration,
+        decoration: AppTheme.cardDecoration(),
         clipBehavior: Clip.antiAlias,
         child: Column(
           children: [
@@ -107,7 +108,7 @@ class _SavedImagesPageState extends State<SavedImagesPage> {
                     child: Text(
                       _formatDate(saved.savedAt),
                       style: const TextStyle(
-                        color: AppTheme.primary,
+                        color: AppTheme.textSecondary,
                         fontSize: 11,
                         fontFamily: 'monospace',
                       ),
@@ -117,7 +118,7 @@ class _SavedImagesPageState extends State<SavedImagesPage> {
                   GestureDetector(
                     onTap: () => _confirmDelete(saved),
                     child: const Icon(Icons.delete_outline,
-                        size: 18, color: Colors.redAccent),
+                        size: 18, color: AppTheme.danger),
                   ),
                 ],
               ),
@@ -132,23 +133,28 @@ class _SavedImagesPageState extends State<SavedImagesPage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: AppTheme.surface,
+        backgroundColor: AppTheme.surfaceAlt,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppTheme.radius),
+          side: BorderSide(color: AppTheme.primary.withOpacity(0.3)),
+        ),
         title: const Text('Delete image?',
             style: TextStyle(color: AppTheme.primary)),
         content: const Text(
           'This will permanently remove the image and its EXIF data '
-          'from the local database.',
-          style: TextStyle(color: Colors.white70),
+              'from the local database.',
+          style: TextStyle(color: AppTheme.textSecondary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Cancel'),
+            child: const Text('Cancel',
+                style: TextStyle(color: AppTheme.textSecondary)),
           ),
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(true),
             child: const Text('Delete',
-                style: TextStyle(color: Colors.redAccent)),
+                style: TextStyle(color: AppTheme.danger)),
           ),
         ],
       ),

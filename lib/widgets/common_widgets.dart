@@ -18,26 +18,26 @@ class InfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: AppTheme.cardDecoration,
+      decoration: AppTheme.cardDecoration(accent: iconColor),
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(children: [
-            Icon(icon, color: const Color(0xFF00FF41), size: 18),
+            Icon(icon, color: iconColor, size: 18),
             const SizedBox(width: 8),
             Text(
               '> $title',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF00FF41),
+                color: iconColor,
                 fontFamily: 'monospace',
                 letterSpacing: 1.2,
               ),
             ),
           ]),
-          const Divider(height: 16, color: Color(0xFF00FF41)),
+          Divider(height: 16, color: iconColor.withOpacity(0.25)),
           child,
         ],
       ),
@@ -63,7 +63,7 @@ class DataRow extends StatelessWidget {
             child: Text(
               label,
               style: const TextStyle(
-                color: Color(0xFF00AA33),
+                color: AppTheme.textSecondary,
                 fontSize: 13,
                 fontFamily: 'monospace',
                 fontWeight: FontWeight.w500,
@@ -73,7 +73,7 @@ class DataRow extends StatelessWidget {
           const Text(
             ' : ',
             style: TextStyle(
-              color: Color(0xFF00FF41),
+              color: AppTheme.primary,
               fontFamily: 'monospace',
               fontSize: 13,
             ),
@@ -82,7 +82,7 @@ class DataRow extends StatelessWidget {
             child: Text(
               value,
               style: const TextStyle(
-                color: Color(0xFF00FF41),
+                color: AppTheme.textPrimary,
                 fontSize: 13,
                 fontFamily: 'monospace',
                 fontWeight: FontWeight.w600,
@@ -114,12 +114,12 @@ class PrimaryButton extends StatelessWidget {
       icon: Icon(icon, size: 18),
       label: Text('[ $label ]'),
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF0D1117),
-        foregroundColor: const Color(0xFF00FF41),
+        backgroundColor: AppTheme.surface,
+        foregroundColor: AppTheme.primary,
         padding: const EdgeInsets.symmetric(vertical: 14),
-        side: const BorderSide(color: Color(0xFF00FF41), width: 1),
+        side: BorderSide(color: AppTheme.primary.withOpacity(0.45), width: 1),
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4)),
+            borderRadius: BorderRadius.circular(6)),
         textStyle: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w700,
